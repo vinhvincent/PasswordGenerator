@@ -4,11 +4,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	System.out.println(Methods.Lowercase() + " | " + 
-					   Methods.Uppercase() + " | " + 
-			           Methods.Numeric() + " | " + 
-					   Methods.Special() + " | " + 
-			           Methods.PassGenerator(true, false, true, false, 20));
+	boolean isLower   = true;
+	boolean isUppwer  = true;
+	boolean isNumeric = true;
+	boolean isSpecial = true;
+	int passwordSize  = 21;
+	String psw        = Methods.PassGenerator(isLower, isUppwer, isNumeric, isSpecial, passwordSize);
+	
+	System.out.println("Password : " + psw + " Lenght : " + psw.length());
 	}
 
 }
