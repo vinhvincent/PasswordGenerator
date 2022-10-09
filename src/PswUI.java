@@ -8,15 +8,31 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextField;
+import javax.swing.JButton;
 
 public class PswUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField textFieldShowPsw;
+	private Listener ec;
+	private JCheckBox chckbxLowerCase;
+	private JCheckBox chckbxUpperCase;
+	private JCheckBox chckbxNumeric;
+	private JCheckBox chckbxSpecialChar;
+	private JButton btnGenerate;
+	private JSpinner spinnerPswLen;
+	private boolean isLower;
+	private boolean isUpper;
+	private boolean isNumeric;
+	private boolean isSpecial;
+	
 
 	/**
 	 * Launch the application.
@@ -51,26 +67,27 @@ public class PswUI extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JCheckBox chckbxLowerCase = new JCheckBox("Lower case");
+		chckbxLowerCase = new JCheckBox("Lower case");		
 		chckbxLowerCase.setBounds(6, 7, 97, 23);
 		panel.add(chckbxLowerCase);
 		
-		JCheckBox chckbxUpperCase = new JCheckBox("Upper case");
+		chckbxUpperCase = new JCheckBox("Upper case");
 		chckbxUpperCase.setBounds(6, 33, 97, 23);
 		panel.add(chckbxUpperCase);
 		
-		JCheckBox chckbxNumeric = new JCheckBox("Numeric");
+		chckbxNumeric = new JCheckBox("Numeric");
 		chckbxNumeric.setBounds(6, 59, 97, 23);
 		panel.add(chckbxNumeric);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(5, 5, 128, 1));
-		spinner.setBounds(273, 7, 71, 20);
-		panel.add(spinner);
+		chckbxSpecialChar = new JCheckBox("Special character");
+		chckbxSpecialChar.setBounds(6, 85, 159, 23);
+		panel.add(chckbxSpecialChar);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Special character");
-		chckbxNewCheckBox.setBounds(6, 85, 107, 23);
-		panel.add(chckbxNewCheckBox);
+		spinnerPswLen = new JSpinner();
+		spinnerPswLen.setModel(new SpinnerNumberModel(5, 5, 128, 1));
+		spinnerPswLen.setBounds(273, 7, 71, 20);
+		panel.add(spinnerPswLen);
+		
 		
 		JLabel lblNewLabel_1 = new JLabel("Password lenght : ");
 		lblNewLabel_1.setBounds(156, 10, 107, 14);
@@ -93,10 +110,64 @@ public class PswUI extends JFrame {
 		lblNewLabel_3.setBounds(10, 236, 414, 14);
 		contentPane.add(lblNewLabel_3);
 		
-		textField = new JTextField();
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setBounds(10, 190, 414, 35);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldShowPsw = new JTextField();
+		textFieldShowPsw.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textFieldShowPsw.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldShowPsw.setBounds(137, 190, 287, 35);
+		contentPane.add(textFieldShowPsw);
+		textFieldShowPsw.setColumns(10);
+		
+		btnGenerate = new JButton("Generate");
+		btnGenerate.setBounds(10, 191, 117, 34);
+		contentPane.add(btnGenerate);
+		
+		chckbxLowerCase.setSelected(true);
+		chckbxUpperCase.setSelected(true);
+		chckbxNumeric.setSelected(true);
+		chckbxSpecialChar.setSelected(true);
+		isLower   = true;
+		isUpper   = true;
+		isNumeric = true;
+		isSpecial = true;
+		
+		ec = new Listener();/*Buttons to actions */
+		chckbxLowerCase.addActionListener(ec);
+		chckbxUpperCase.addActionListener(ec);
+		chckbxNumeric.addActionListener(ec);
+		chckbxSpecialChar.addActionListener(ec);
+		btnGenerate.addActionListener(ec);
+		
+	}
+	
+	/* Listener to map buttons to actions */
+	private class Listener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getSource() == chckbxLowerCase)
+			{
+				// ternary operator to be shorter | Similar to if/else statement
+				isLower = chckbxLowerCase.isSelected() ? true : false;			
+			}
+			else if (e.getSource() == chckbxUpperCase)
+			{
+				isUpper = chckbxUpperCase.isSelected() ? true : false;	
+			}
+			else if (e.getSource() == chckbxNumeric)
+			{
+				isNumeric = chckbxNumeric.isSelected() ? true : false;	
+			}
+			else if (e.getSource() == chckbxSpecialChar)
+			{
+				isSpecial = chckbxSpecialChar.isSelected() ? true : false;	
+			}
+			else if (e.getSource() == btnGenerate)
+			{
+				String psw = Methods.PassGenerator(isLower, isUpper, isNumeric, isSpecial, (Integer) spinnerPswLen.getValue());
+				textFieldShowPsw.setText(psw);
+			}
+		}
+		
 	}
 }

@@ -30,7 +30,12 @@ public class Methods {
 		String psw = "";
 		int rnum = 0;
 		Random random = new Random();
-
+		if (!isLower && !isUpper && !isNumeric && !isSpecial)
+		{
+			psw = "Make a checkbox selection!";
+			return psw;
+		}
+		
 		while(psw.length() < lenght) {
 			rnum = random.nextInt(4 - 1 + 1) + 1;
 			if (isLower && rnum == 1) {
@@ -45,7 +50,7 @@ public class Methods {
 			else if (isSpecial && rnum == 4) {
 				psw = psw + Special();
 			}
-			System.out.println("pass : " + psw);
+			System.out.println("pass : " + psw);			
 		}
 		return psw;
 		
